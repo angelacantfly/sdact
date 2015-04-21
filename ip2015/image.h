@@ -19,6 +19,11 @@ using namespace std;
 #define GREEN	1
 #define BLUE	2
 
+struct Point
+{
+    double x;
+    double y;
+};
 
 
 /*

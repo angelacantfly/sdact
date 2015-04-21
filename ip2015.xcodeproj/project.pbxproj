@@ -14,6 +14,7 @@
 		118F290A1A6AD6A30063E917 /* image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118F29081A6AD6A30063E917 /* image.cpp */; };
 		118F290D1A6AD7500063E917 /* ip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118F290B1A6AD7500063E917 /* ip.cpp */; };
 		118F290F1A6AD7C50063E917 /* control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118F290E1A6AD7C50063E917 /* control.cpp */; };
+		29156CEE1AE7172D0055F3F1 /* vmath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29156CEC1AE7172D0055F3F1 /* vmath.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -42,6 +43,8 @@
 		118F290C1A6AD7500063E917 /* ip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ip.h; sourceTree = "<group>"; };
 		118F290E1A6AD7C50063E917 /* control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = control.cpp; sourceTree = "<group>"; };
 		118F29101A6AD7D90063E917 /* control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = control.h; sourceTree = "<group>"; };
+		29156CEC1AE7172D0055F3F1 /* vmath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vmath.cpp; path = ../vmath.cpp; sourceTree = "<group>"; };
+		29156CED1AE7172D0055F3F1 /* vmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vmath.h; path = ../vmath.h; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -81,6 +84,8 @@
 			children = (
 				118F29111A6AD91C0063E917 /* skeletonCode */,
 				118F290B1A6AD7500063E917 /* ip.cpp */,
+				29156CEC1AE7172D0055F3F1 /* vmath.cpp */,
+				29156CED1AE7172D0055F3F1 /* vmath.h */,
 			);
 			path = ip2015;
 			sourceTree = "<group>";
@@ -165,6 +170,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				29156CEE1AE7172D0055F3F1 /* vmath.cpp in Sources */,
 				118F290D1A6AD7500063E917 /* ip.cpp in Sources */,
 				118F290F1A6AD7C50063E917 /* control.cpp in Sources */,
 				118F28F21A6ABAEE0063E917 /* main.cpp in Sources */,

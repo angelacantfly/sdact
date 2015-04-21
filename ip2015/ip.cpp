@@ -5,6 +5,7 @@
 #include <math.h>
 #include <time.h>
 #include <cmath>
+#include "vmath.h"
 
 #define RED	0
 #define GREEN	1
@@ -65,5 +66,28 @@ Image* ip_grey (Image* src)
     
     cerr << "Done!" << endl;
     return newImage;
+}
+
+double mvc_calculate_w (double alpha, double beta, Point p, Point x){
+    // tan(alpha/2) + tan(beta/2)
+    double top = tan(alpha/2) + tan(beta/2);
+    // ||p - x||, distance between two points
+    double bot = sqrt(pow(p.x - x.x, 2) + pow(p.y- x.y, 2));
+    
+    return top/bot;
+}
+
+double mvc_calculate_angle(Point x, Point p1, Point p2)
+{
+    vector<double> p1_x = vector<double>(x.x - p1.x, x.y - p1.y);
+    vector<double> x_p2 = vector<double>(p2.x - x.x, p2.y - x.y);
+    double cosTheta = dotProduct(p1_x, x_p2)/(length(p1_x)* length(x_p2));
+    return acos(cosTheta);
+}
+
+void mvc_calculate_lambda(Point x, Point list[], double* result)
+{
+    
+    
 }
 
