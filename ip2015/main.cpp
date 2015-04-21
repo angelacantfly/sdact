@@ -39,7 +39,7 @@ int main (int argc, char** argv)
         glutInitDisplayMode(GLUT_RGB | GLUT_DOUBLE);
         glutInitWindowPosition(100,100);
         glutInitWindowSize(window_width, window_height);
-        glutCreateWindow("hmc cs155 image processor");
+        glutCreateWindow("Mean Value Cloning");
         
         // register call back functions
         glutDisplayFunc(display);
