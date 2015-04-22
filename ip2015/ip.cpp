@@ -6,6 +6,7 @@
 #include <time.h>
 #include <cmath>
 #include "vmath.h"
+#include <array>
 
 #define RED	0
 #define GREEN	1
@@ -85,9 +86,42 @@ double mvc_calculate_angle(Point x, Point p1, Point p2)
     return acos(cosTheta);
 }
 
-void mvc_calculate_lambda(Point x, Point list[], double* result)
+vector<double> mvc_calculate_lambda(Point x, vector<Point> list, double& sum)
 {
+    vector<double> result;
+    unsigned long size = list.size();
+    result.reserve(size);
+    double alpha, beta;
+    sum = 0;    // set sum to 0 to count;
     
+    alpha = mvc_calculate_angle(x, list[size-1], list[0]);
+    beta = mvc_calculate_angle(x, list[0], list[1]);
+    result[0] = mvc_calculate_w(alpha, beta, list[0], x);
+    sum += result[0];
     
+    alpha = mvc_calculate_angle(x, list[size-2], list[size-1]);
+    beta = mvc_calculate_angle(x, list[size-1], list[0]);
+    result[size-1] = mvc_calculate_w(alpha, beta, list[size-1], x);
+    sum+= result[size-1];
+
+    
+    for (int i = 1 ; i < size-2; i++) {
+        alpha = mvc_calculate_angle(x, list[i-1], list[i]);
+        beta = mvc_calculate_angle(x, list[i], list[i+1]);
+        result[i] = mvc_calculate_w(alpha, beta, list[i], x);
+        sum += result[i];
+    }
+    
+    vector<double> lambda;
+    lambda.reserve(size);
+    for (int k = 0; k < size -1; k++) {
+        lambda[k] = result[k] / sum;
+    }
+    
+    return lambda;
 }
 
+void mvc_cloning(Image* source, Image* patch)
+{
+    
+}
