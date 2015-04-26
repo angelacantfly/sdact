@@ -123,5 +123,26 @@ vector<double> mvc_calculate_lambda(Point x, vector<Point> list, double& sum)
 
 void mvc_cloning(Image* source, Image* patch)
 {
+    // Source patch image
+    vector<Point> boundary_source; // TODO: find the boundary points
+    vector<Point> all_pixel_source;
+    unsigned long size_all_pixel_source = all_pixel_source.size();
     
+    vector<vector<double>> all_pixel_result; // FIXME: good idea?
+    
+    //Preprocessing stage
+    for (int i = 0; i < size_all_pixel_source; i++) {
+        double sum = 0;
+        all_pixel_result[i] = mvc_calculate_lambda(all_pixel_source[i], boundary_source, sum);
+    }
+    
+    // Target Image
+    // Compute the differences along the boundary
+    vector<Point> boundary_target;
+    unsigned long size_bt = boundary_target.size();
+    for (int k = 0; k < size_bt; ++k) {
+        // Compute the differences along the boundary
+        
+        // Evaluate the mean-value interpolant at x
+    }
 }
