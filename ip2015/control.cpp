@@ -14,6 +14,7 @@ enum {
 	M_HELP = 1,
 
 	M_FILE_OPEN =2,
+    M_FILE_OPEN_DEFAULT = 33,
 	M_FILE_SAVE =3,
 	M_FILE_INFO =4,
 	M_FILE_REVERT =5,
@@ -40,6 +41,9 @@ enum {
 	M_PROCESS_ROTATE=24,
 	M_PROCESS_SATURATE=25,
 	M_PROCESS_SCALE=26,
+    M_PROCESS_SELECT_SQUARE=32, // square select test
+    
+    M_MVC_SQUARE = 60,
 
 	M_PROCESS_SET_SAMPLING_BILINEAR=27,
 	M_PROCESS_SET_SAMPLING_NEAREST=28,
@@ -56,6 +60,7 @@ int make_menu ()
 {
 	int file = glutCreateMenu(menu_func);
 	glutAddMenuEntry( "Open...",		M_FILE_OPEN);
+    glutAddMenuEntry("Open the duck ...", M_FILE_OPEN_DEFAULT);
 	glutAddMenuEntry( "Save...",		M_FILE_SAVE);
 	glutAddMenuEntry( "Get Image Info",		M_FILE_INFO);
 	glutAddMenuEntry( "Revert",		M_FILE_REVERT);
@@ -63,7 +68,9 @@ int make_menu ()
 
 	int process = glutCreateMenu(menu_func);
 	glutAddMenuEntry( "Composite...",	M_PROCESS_COMPOSITE);
-
+    glutAddMenuEntry("Grey...", M_PROCESS_GREY);
+    glutAddMenuEntry("Select center square...", M_PROCESS_SELECT_SQUARE);
+    glutAddMenuEntry("MVC with square", M_MVC_SQUARE);
 
 	int main = glutCreateMenu(menu_func);
 	glutAddSubMenu(   "File",		file);
@@ -114,7 +121,11 @@ void menu_func (int value)
 		checkStream(cin);
 		image_load(filename);
 		break;
-
+            
+    case M_FILE_OPEN_DEFAULT:
+        image_load("/Users/owlroro/Desktop/sdact/Graphics_duck.bmp");
+        break;
+            
 
 	case M_FILE_SAVE:   // enum #3
 		if (!quietMode)
@@ -205,8 +216,18 @@ void process_func (int value)
 			delete mask;
 			break;
 		}
+            
+    case M_PROCESS_GREY: // enum #17
+        resultImage = ip_grey(currentImage);
+        break;
+    
+    case M_PROCESS_SELECT_SQUARE:
+            resultImage = ip_select_center_square(currentImage);
+            break;
 
-
+    case M_MVC_SQUARE:
+            resultImage = mvc_cloning_square(currentImage, nullptr);
+            break;
 	default:
 		break;
 	}

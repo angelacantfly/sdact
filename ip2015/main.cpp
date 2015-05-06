@@ -58,7 +58,12 @@ int main (int argc, char** argv)
             image_load(toLoad);
         
         // wait for something to happen
-        glutMainLoop();
+        try {
+            glutMainLoop();
+        }
+        catch (const std::length_error& le) {
+            std::cerr << "Length error: " << le.what() << '\n';
+        }
     }
     return 0;
 }

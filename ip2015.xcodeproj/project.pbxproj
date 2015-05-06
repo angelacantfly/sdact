@@ -16,6 +16,8 @@
 		118F290F1A6AD7C50063E917 /* control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118F290E1A6AD7C50063E917 /* control.cpp */; };
 		29156CEE1AE7172D0055F3F1 /* vmath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29156CEC1AE7172D0055F3F1 /* vmath.cpp */; };
 		29156CF11AE81BC10055F3F1 /* calc_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29156CEF1AE81BC10055F3F1 /* calc_test.cpp */; };
+		297BCFFB1AF6D04F007B109D /* helpfunctions.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 297BCFF91AF6D04F007B109D /* helpfunctions.cpp */; };
+		297BCFFE1AF6D0A9007B109D /* mvchelpers.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 297BCFFC1AF6D0A9007B109D /* mvchelpers.cpp */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXCopyFilesBuildPhase section */
@@ -48,6 +50,11 @@
 		29156CED1AE7172D0055F3F1 /* vmath.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = vmath.h; path = ../vmath.h; sourceTree = "<group>"; };
 		29156CEF1AE81BC10055F3F1 /* calc_test.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = calc_test.cpp; sourceTree = "<group>"; };
 		29156CF01AE81BC10055F3F1 /* calc_test.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = calc_test.h; sourceTree = "<group>"; };
+		297BCFF91AF6D04F007B109D /* helpfunctions.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = helpfunctions.cpp; sourceTree = "<group>"; };
+		297BCFFA1AF6D04F007B109D /* helpfunctions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = helpfunctions.h; sourceTree = "<group>"; };
+		297BCFFC1AF6D0A9007B109D /* mvchelpers.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = mvchelpers.cpp; sourceTree = "<group>"; };
+		297BCFFD1AF6D0A9007B109D /* mvchelpers.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = mvchelpers.h; sourceTree = "<group>"; };
+		299EA3A01AEC9D0F0087BF48 /* opencv2.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = opencv2.framework; path = ../ios/opencv2.framework; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -87,6 +94,10 @@
 			children = (
 				118F29111A6AD91C0063E917 /* skeletonCode */,
 				118F290B1A6AD7500063E917 /* ip.cpp */,
+				297BCFF91AF6D04F007B109D /* helpfunctions.cpp */,
+				297BCFFA1AF6D04F007B109D /* helpfunctions.h */,
+				297BCFFC1AF6D0A9007B109D /* mvchelpers.cpp */,
+				297BCFFD1AF6D0A9007B109D /* mvchelpers.h */,
 				29156CEC1AE7172D0055F3F1 /* vmath.cpp */,
 				29156CED1AE7172D0055F3F1 /* vmath.h */,
 				29156CF21AE81BC70055F3F1 /* Test */,
@@ -97,6 +108,7 @@
 		118F29061A6AD27E0063E917 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				299EA3A01AEC9D0F0087BF48 /* opencv2.framework */,
 				118F28F81A6ABBA20063E917 /* Cocoa.framework */,
 				118F28FA1A6ABBBB0063E917 /* GLUT.framework */,
 			);
@@ -183,9 +195,11 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				297BCFFE1AF6D0A9007B109D /* mvchelpers.cpp in Sources */,
 				29156CEE1AE7172D0055F3F1 /* vmath.cpp in Sources */,
 				118F290D1A6AD7500063E917 /* ip.cpp in Sources */,
 				118F290F1A6AD7C50063E917 /* control.cpp in Sources */,
+				297BCFFB1AF6D04F007B109D /* helpfunctions.cpp in Sources */,
 				118F28F21A6ABAEE0063E917 /* main.cpp in Sources */,
 				29156CF11AE81BC10055F3F1 /* calc_test.cpp in Sources */,
 				118F290A1A6AD6A30063E917 /* image.cpp in Sources */,
@@ -272,6 +286,10 @@
 		118F28F61A6ABAEE0063E917 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/owlroro/Desktop/ios,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -279,6 +297,10 @@
 		118F28F71A6ABAEE0063E917 /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					/Users/owlroro/Desktop/ios,
+				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

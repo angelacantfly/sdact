@@ -53,6 +53,10 @@ Image*	ip_scale (Image* src, double x, double y, int samplingMode, int gaussianF
 Image*	ip_threshold (Image* src, double cutoff);
 Image* ip_misc_sobel(Image* src);
 Image* ip_misc_tv(Image* src);
+Image* ip_select_center_square(Image* src);
+
+Image* mvc_cloning_square(Image* source, Image* patch);
+
 
 
 
