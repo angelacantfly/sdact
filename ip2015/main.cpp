@@ -191,16 +191,20 @@ Image* computeLambda(Image* background, Image* patch)
 {
     Image* result = new Image(*background);
     // for fixed square  in duck
-    Point upperLeft, upperRight, lowerLeft, lowerRight;
-    upperLeft.x=0;
-    upperLeft.y=0;
-    upperRight.x=3;
-    upperRight.y=0;
-    lowerLeft.x=0;
-    lowerLeft.y=3;
-    lowerRight.x=3;
-    lowerRight.y = 3;
+//    Point upperLeft, upperRight, lowerLeft, lowerRight;
+//    upperLeft.x=0;
+//    upperLeft.y=0;
+//    upperRight.x=3;
+//    upperRight.y=0;
+//    lowerLeft.x=0;
+//    lowerLeft.y=3;
+//    lowerRight.x=3;
+//    lowerRight.y = 3;
     
+    // Here we can alternate between vector implementation and
+    // array implementation, we suspect that the array implementation
+    // might have undesirable side effects. (When we access out of
+    // bound, array implementation will allow it without warning.)
     const int boundaryLength=61;
     const int perimeter=4*(boundaryLength-1);
 //    int boundary[perimeter][2];
@@ -219,9 +223,6 @@ Image* computeLambda(Image* background, Image* patch)
         }
     }
     
-//    for (int c=0; c<perimeter; c++) {
-//        cout <<  c << "("  << boundary[c][0] << "," << boundary[c][1] << ") " << endl;
-//    }
     
     // finding boundary points
     for (int a = 0; a < boundaryLength-1; a++) {
@@ -236,9 +237,6 @@ Image* computeLambda(Image* background, Image* patch)
         
         boundary[3 * (boundaryLength - 1) + a][0] = boundaryLength - 1; // right
         boundary[3 * (boundaryLength - 1) + a][1] = boundaryLength - 1 -a;
-    }
-    for (int c=0; c<perimeter; c++) {
-        cout <<  c << "("  << boundary[c][0] << "," << boundary[c][1] << ") " << endl;
     }
 
     // setting interior pts
@@ -280,20 +278,13 @@ Image* computeLambda(Image* background, Image* patch)
                     
                 double alpha = acos(dotProduct(ip0, ip1)/(length(ip0)* length(ip1)));
                 double beta = acos(dotProduct(ip1, ip2)/(length(ip1)* length(ip2)));
-                if (alpha != alpha || tan(alpha/2) != tan(alpha/2))
-                    cout << "alpha is nan" << endl;
-                if (beta != beta || tan(beta/2) != tan(beta/2))
-                    cout << "beta is nan" << endl;
-                if (length(ip1) ==0)
-                    cout << "length of ip1 is 0" << endl;
+
                 lambda[i][j][(c+1)%perimeter] = (tan(alpha/2) + tan(beta/2)) / (length(ip1));
                 sum += lambda[i][j][(c+1)%perimeter];
 
                 }
-//            cout << "Sum : " << sum << endl;
             for (int c=0; c<perimeter; c++) {
                 lambda[i][j][c] = lambda[i][j][c] / sum;
-//                cout << "(" <<interiorPoints[i][j][0] << "," << interiorPoints[i][j][1] << ") ("  << boundary[c][0] << "," << boundary[c][1] << ") " << lambda[i][j][c] << endl;
             }
         }
     }
@@ -330,7 +321,8 @@ Image* computeLambda(Image* background, Image* patch)
                 rx_green += lambda[i][j][c] * diff_boundary[c][1];
                 rx_blue += lambda[i][j][c] * diff_boundary[c][2];
             }
-            
+            // Modify the results in the backgound image according to
+            // calculations
             result->setPixel(x, y, RED, correctColor(patch->getPixel(x, y, RED) + rx_red));
             result->setPixel(x, y, GREEN, correctColor(patch->getPixel(x, y, GREEN) + rx_green));
             result->setPixel(x, y, BLUE, correctColor(patch->getPixel(x, y, BLUE) + rx_blue));

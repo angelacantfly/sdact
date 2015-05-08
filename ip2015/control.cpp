@@ -88,7 +88,7 @@ void menu_func (int value)
 		break;
             
     case M_FILE_OPEN_DEFAULT:
-        image_load("/Users/owlroro/Desktop/sdact/sunset.bmp");
+        image_load("/Users/owlroro/Desktop/sdact/Background.bmp");
         break;
             
 
@@ -126,7 +126,7 @@ void process_func (int value)
 //    cin  >> filename;
     Image* secondImage = new Image();
 //    secondImage->read(filename);
-    secondImage->read("/Users/owlroro/Desktop/sdact/Graphics_duck.bmp");
+    secondImage->read("/Users/owlroro/Desktop/sdact/try2.bmp");
     resultImage = computeLambda(currentImage, secondImage);
     delete secondImage;
     
