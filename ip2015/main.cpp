@@ -187,7 +187,7 @@ void reshape (int width, int height)
     glLoadIdentity();
 }
 
-Image* computeLambda(Image* background, Image* patch)
+Image* computeLambda(Image* background, Image* patch, int x_off, int y_off)
 {
     Image* result = new Image(*background);
     // for fixed square  in duck
@@ -205,7 +205,7 @@ Image* computeLambda(Image* background, Image* patch)
     // array implementation, we suspect that the array implementation
     // might have undesirable side effects. (When we access out of
     // bound, array implementation will allow it without warning.)
-    const int boundaryLength=61;
+    const int boundaryLength=65;
     const int perimeter=4*(boundaryLength-1);
 //    int boundary[perimeter][2];
     vector<vector<int>> boundary;
@@ -222,7 +222,10 @@ Image* computeLambda(Image* background, Image* patch)
             interiorPoints[a][b].resize(2);
         }
     }
-    
+    int x_offset;
+    int y_offset;
+    x_offset = x_off;
+    y_offset = y_off;
     
     // finding boundary points
     for (int a = 0; a < boundaryLength-1; a++) {
@@ -299,7 +302,7 @@ Image* computeLambda(Image* background, Image* patch)
         y = boundary[c][1];
         Pixel Px_patch, Px_bg;
         Px_patch = patch->getPixel(x, y);
-        Px_bg = background->getPixel(x, y);
+        Px_bg = background->getPixel(x + x_offset, y + y_offset);
         for (int channel = 0; channel < 3; channel++) {
             diff_boundary[c][channel] = Px_bg.getColor(channel) - Px_patch.getColor(channel);
         }
@@ -323,9 +326,9 @@ Image* computeLambda(Image* background, Image* patch)
             }
             // Modify the results in the backgound image according to
             // calculations
-            result->setPixel(x, y, RED, correctColor(patch->getPixel(x, y, RED) + rx_red));
-            result->setPixel(x, y, GREEN, correctColor(patch->getPixel(x, y, GREEN) + rx_green));
-            result->setPixel(x, y, BLUE, correctColor(patch->getPixel(x, y, BLUE) + rx_blue));
+            result->setPixel(x + x_offset, y + y_offset, RED, correctColor(patch->getPixel(x, y, RED) + rx_red));
+            result->setPixel(x + x_offset, y + y_offset, GREEN, correctColor(patch->getPixel(x, y, GREEN) + rx_green));
+            result->setPixel(x + x_offset, y + y_offset, BLUE, correctColor(patch->getPixel(x, y, BLUE) + rx_blue));
         }
     return result;
 }

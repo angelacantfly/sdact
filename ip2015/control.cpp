@@ -88,7 +88,7 @@ void menu_func (int value)
 		break;
             
     case M_FILE_OPEN_DEFAULT:
-        image_load("/Users/owlroro/Desktop/sdact/Background.bmp");
+        image_load("/Users/owlroro/Desktop/sdact/sand.bmp");
         break;
             
 
@@ -119,6 +119,14 @@ void menu_func (int value)
 void process_func (int value)
 {
     Image* resultImage = NULL;
+    int x_offset = getInt("x : ");
+    int y_offset = getInt("y : ");
+    
+    if (x_offset > currentImage->getWidth() || y_offset > currentImage->getHeight()) {
+        cout << "x or y is too large. Using default values instead."<<endl;
+        x_offset = 200;
+        y_offset = 120;
+    }
     
 //    char filename[MAX_NAME];
 //    if (!quietMode)
@@ -126,8 +134,8 @@ void process_func (int value)
 //    cin  >> filename;
     Image* secondImage = new Image();
 //    secondImage->read(filename);
-    secondImage->read("/Users/owlroro/Desktop/sdact/try2.bmp");
-    resultImage = computeLambda(currentImage, secondImage);
+    secondImage->read("/Users/owlroro/Desktop/sdact/polarbear2.bmp");
+    resultImage = computeLambda(currentImage, secondImage, x_offset, y_offset);
     delete secondImage;
     
 
