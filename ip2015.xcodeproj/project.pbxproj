@@ -12,7 +12,6 @@
 		118F28FB1A6ABBBB0063E917 /* GLUT.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 118F28FA1A6ABBBB0063E917 /* GLUT.framework */; };
 		118F28FD1A6ABBC80063E917 /* OpenGL.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 118F28FC1A6ABBC80063E917 /* OpenGL.framework */; };
 		118F290A1A6AD6A30063E917 /* image.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118F29081A6AD6A30063E917 /* image.cpp */; };
-		118F290D1A6AD7500063E917 /* ip.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118F290B1A6AD7500063E917 /* ip.cpp */; };
 		118F290F1A6AD7C50063E917 /* control.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 118F290E1A6AD7C50063E917 /* control.cpp */; };
 		29156CEE1AE7172D0055F3F1 /* vmath.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29156CEC1AE7172D0055F3F1 /* vmath.cpp */; };
 		29156CF11AE81BC10055F3F1 /* calc_test.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 29156CEF1AE81BC10055F3F1 /* calc_test.cpp */; };
@@ -42,8 +41,6 @@
 		118F29071A6AD66D0063E917 /* common.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = common.h; sourceTree = "<group>"; };
 		118F29081A6AD6A30063E917 /* image.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = image.cpp; sourceTree = "<group>"; };
 		118F29091A6AD6A30063E917 /* image.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = image.h; sourceTree = "<group>"; };
-		118F290B1A6AD7500063E917 /* ip.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = ip.cpp; sourceTree = "<group>"; };
-		118F290C1A6AD7500063E917 /* ip.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ip.h; sourceTree = "<group>"; };
 		118F290E1A6AD7C50063E917 /* control.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = control.cpp; sourceTree = "<group>"; };
 		118F29101A6AD7D90063E917 /* control.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = control.h; sourceTree = "<group>"; };
 		29156CEC1AE7172D0055F3F1 /* vmath.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; name = vmath.cpp; path = ../vmath.cpp; sourceTree = "<group>"; };
@@ -93,7 +90,6 @@
 			isa = PBXGroup;
 			children = (
 				118F29111A6AD91C0063E917 /* skeletonCode */,
-				118F290B1A6AD7500063E917 /* ip.cpp */,
 				297BCFF91AF6D04F007B109D /* helpfunctions.cpp */,
 				297BCFFA1AF6D04F007B109D /* helpfunctions.h */,
 				297BCFFC1AF6D0A9007B109D /* mvchelpers.cpp */,
@@ -118,7 +114,6 @@
 		118F29111A6AD91C0063E917 /* skeletonCode */ = {
 			isa = PBXGroup;
 			children = (
-				118F290C1A6AD7500063E917 /* ip.h */,
 				118F29071A6AD66D0063E917 /* common.h */,
 				118F29101A6AD7D90063E917 /* control.h */,
 				118F290E1A6AD7C50063E917 /* control.cpp */,
@@ -197,7 +192,6 @@
 			files = (
 				297BCFFE1AF6D0A9007B109D /* mvchelpers.cpp in Sources */,
 				29156CEE1AE7172D0055F3F1 /* vmath.cpp in Sources */,
-				118F290D1A6AD7500063E917 /* ip.cpp in Sources */,
 				118F290F1A6AD7C50063E917 /* control.cpp in Sources */,
 				297BCFFB1AF6D04F007B109D /* helpfunctions.cpp in Sources */,
 				118F28F21A6ABAEE0063E917 /* main.cpp in Sources */,

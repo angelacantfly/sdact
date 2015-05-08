@@ -28,6 +28,6 @@ void usage ();
 void display ();
 void unreshape (int width, int height);
 void reshape (int width, int height);
-
-
+Image* computeLambda(Image* background, Image* patch);
+double correctColor(double value);
 #endif

@@ -19,40 +19,9 @@ enum {
 	M_FILE_INFO =4,
 	M_FILE_REVERT =5,
 
-
-	M_PROCESS_BLUR_BOX =6,
-	M_PROCESS_BLUR_GAUSSIAN =7,
-	M_PROCESS_BLUR_TRIANGLE=8,
-	M_PROCESS_BRIGHTEN=9,
-	M_PROCESS_COLOR_SHIFT=10,
-	M_PROCESS_CONTRAST=11,
-	M_PROCESS_COMPOSITE=12,
-	M_PROCESS_CROP=13,
-	M_PROCESS_EDGE_DETECT=14,
-	M_PROCESS_EXTRACT=15,
-	M_PROCESS_FUN_WARP=16,
-	M_PROCESS_GREY=17,
-	M_PROCESS_IMAGE_SHIFT=18,
-	M_PROCESS_INVERT=19,
-	M_PROCESS_MISC=20,
-	M_PROCESS_QUANTIZE_SIMPLE=21,
-	M_PROCESS_QUANTIZE_ORDERED=22,
-	M_PROCESS_QUANTIZE_FLOYD_STEINBERG=23,
-	M_PROCESS_ROTATE=24,
-	M_PROCESS_SATURATE=25,
-	M_PROCESS_SCALE=26,
-    M_PROCESS_SELECT_SQUARE=32, // square select test
     
-    M_MVC_SQUARE = 60,
+    M_MVC_SQUARE = 6,
 
-	M_PROCESS_SET_SAMPLING_BILINEAR=27,
-	M_PROCESS_SET_SAMPLING_NEAREST=28,
-	M_PROCESS_SET_SAMPLING_GAUSSIAN=29,
-	M_PROCESS_THRESHOLD=30,
-
-	M_VIEW_PIXEL_VALUE=31,
-
-	M_LAST_ENUM
 } MENU_ITEMS;
 
 
@@ -60,22 +29,18 @@ int make_menu ()
 {
 	int file = glutCreateMenu(menu_func);
 	glutAddMenuEntry( "Open...",		M_FILE_OPEN);
-    glutAddMenuEntry("Open the duck ...", M_FILE_OPEN_DEFAULT);
+    glutAddMenuEntry("Open the background ...", M_FILE_OPEN_DEFAULT);
 	glutAddMenuEntry( "Save...",		M_FILE_SAVE);
 	glutAddMenuEntry( "Get Image Info",		M_FILE_INFO);
 	glutAddMenuEntry( "Revert",		M_FILE_REVERT);
 
 
 	int process = glutCreateMenu(menu_func);
-	glutAddMenuEntry( "Composite...",	M_PROCESS_COMPOSITE);
-    glutAddMenuEntry("Grey...", M_PROCESS_GREY);
-    glutAddMenuEntry("Select center square...", M_PROCESS_SELECT_SQUARE);
     glutAddMenuEntry("MVC with square", M_MVC_SQUARE);
 
 	int main = glutCreateMenu(menu_func);
 	glutAddSubMenu(   "File",		file);
 	glutAddSubMenu(   "Process",		process);
-	glutAddMenuEntry( "View pixel value...", M_VIEW_PIXEL_VALUE);
 	glutAddMenuEntry( "Help",		M_HELP);
 	glutAddMenuEntry( "Quit",		M_QUIT);
 
@@ -123,7 +88,7 @@ void menu_func (int value)
 		break;
             
     case M_FILE_OPEN_DEFAULT:
-        image_load("/Users/owlroro/Desktop/sdact/Graphics_duck.bmp");
+        image_load("/Users/owlroro/Desktop/sdact/sunset.bmp");
         break;
             
 
@@ -145,32 +110,7 @@ void menu_func (int value)
 		image_revert();
 		break;
 
-	case M_VIEW_PIXEL_VALUE: // enum #31
-		{
-			if (!currentImage) 
-			{
-				cerr << "Sorry, no image is loaded." << endl;
-				break;
-			}
-			if (!quietMode)
-			{
-				cerr << "Current image width and height: " << currentImage->getWidth()-1 << " " 
-					<< currentImage->getHeight()-1 << endl;
-			}
-			int x=getInt("x value of pixel to view");
-			int y=getInt("y value of pixel to view");
-			if (x<0 || x>=currentImage->getWidth() || y<0 || y>=currentImage->getHeight())
-			{
-				cerr << "Invalid pixel location." << endl;
-				break;
-			}
-			cerr << "R: " << currentImage->getPixel(x,y,RED);
-			cerr << ", G: " << currentImage->getPixel(x,y,GREEN);
-			cerr << ", B: " << currentImage->getPixel(x,y,BLUE) << endl;
-			break;
-		}
-
-	default:
+		default:
 		process_func(value);
 	}
 	return;
@@ -178,75 +118,34 @@ void menu_func (int value)
 
 void process_func (int value)
 {
-
-	Image* resultImage = NULL;
-	static int samplingMode = I_NEAREST;
-	static int gaussianFilterSize = 3;
-	static double gaussianSigma = 1.0;
-
-	//  check if we have an image to process 
-	if (!currentImage)
-	{
-		cerr << "Sorry, no image is loaded!" << endl;
-		return;
-	}
-
-	switch (value)
-	{
-
-
-	case M_PROCESS_COMPOSITE: // enum #12
-		{
-			char filename[MAX_NAME];
-			// we don't do a lot of checks here; i.e. second image and
-			// mask valid images and the same size as current image
-			if (!quietMode)
-				cerr << "Enter filename of second image (string - no spaces) : ";
-			cin  >> filename;
-			Image* secondImage = new Image();
-			secondImage->read(filename);
-			if (!quietMode)
-				cerr << "Enter filename of mask (string - no spaces) : ";
-			cin  >> filename;
-			Image* mask = new Image();
-			mask->read(filename);
-			checkStream(cin);
-			resultImage = ip_composite(currentImage, secondImage, mask);
-			delete secondImage;
-			delete mask;
-			break;
-		}
-            
-    case M_PROCESS_GREY: // enum #17
-        resultImage = ip_grey(currentImage);
-        break;
+    Image* resultImage = NULL;
     
-    case M_PROCESS_SELECT_SQUARE:
-            resultImage = ip_select_center_square(currentImage);
-            break;
+//    char filename[MAX_NAME];
+//    if (!quietMode)
+//        cerr << "Enter filename of patch image (string - no spaces) : ";
+//    cin  >> filename;
+    Image* secondImage = new Image();
+//    secondImage->read(filename);
+    secondImage->read("/Users/owlroro/Desktop/sdact/Graphics_duck.bmp");
+    resultImage = computeLambda(currentImage, secondImage);
+    delete secondImage;
+    
 
-    case M_MVC_SQUARE:
-            resultImage = mvc_cloning_square(currentImage, nullptr);
-            break;
-	default:
-		break;
-	}
-
-	if (resultImage != NULL)
-	{
-		delete currentImage;
-		currentImage = resultImage;
-
-		if (currentImage->getWidth()  != window_width    ||
-			currentImage->getHeight() != window_height)
-			reshape(currentImage->getWidth(), currentImage->getHeight());
-
-		if (!quietMode)
-			cerr << "done!" << endl;
-
-		if (!textMode)
-			glutPostRedisplay();
-	}
+    if (resultImage != NULL)
+    {
+        delete currentImage;
+        currentImage = resultImage;
+        
+        if (currentImage->getWidth()  != window_width    ||
+            currentImage->getHeight() != window_height)
+            reshape(currentImage->getWidth(), currentImage->getHeight());
+        
+        if (!quietMode)
+            cerr << "done!" << endl;
+        
+        if (!textMode)
+            glutPostRedisplay();
+    }
 }
 
 void keyboard_func (unsigned char key, int x, int y)

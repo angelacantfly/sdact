@@ -4,7 +4,7 @@
 #include <stdio.h>
 #include <time.h>
 #include "control.h"
-
+#include "vmath.h"
 
 /*
  * IMPORTANT - DO NOT CHANGE THIS FILE - IMPORTANT
@@ -186,3 +186,167 @@ void reshape (int width, int height)
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 }
+
+Image* computeLambda(Image* background, Image* patch)
+{
+    Image* result = new Image(*background);
+    // for fixed square  in duck
+    Point upperLeft, upperRight, lowerLeft, lowerRight;
+    upperLeft.x=0;
+    upperLeft.y=0;
+    upperRight.x=3;
+    upperRight.y=0;
+    lowerLeft.x=0;
+    lowerLeft.y=3;
+    lowerRight.x=3;
+    lowerRight.y = 3;
+    
+    const int boundaryLength=61;
+    const int perimeter=4*(boundaryLength-1);
+//    int boundary[perimeter][2];
+    vector<vector<int>> boundary;
+    boundary.resize(perimeter);
+    for (int i = 0; i < perimeter; i++) {
+        boundary[i].resize(2);
+    }
+//    int interiorPoints[(boundaryLength-2)][(boundaryLength-2)][2];
+    vector<vector<vector<int>>> interiorPoints;
+    interiorPoints.resize(boundaryLength-2);
+    for (int a = 0 ; a < boundaryLength-2; a++) {
+        interiorPoints[a].resize(boundaryLength-2);
+        for (int b = 0 ; b < boundaryLength-2; b++) {
+            interiorPoints[a][b].resize(2);
+        }
+    }
+    
+//    for (int c=0; c<perimeter; c++) {
+//        cout <<  c << "("  << boundary[c][0] << "," << boundary[c][1] << ") " << endl;
+//    }
+    
+    // finding boundary points
+    for (int a = 0; a < boundaryLength-1; a++) {
+        boundary[a][0] = boundaryLength - 1 - a; // top
+        boundary[a][1] = 0;
+        
+        boundary[(boundaryLength-1) + a][0] = 0; // left
+        boundary[(boundaryLength-1) + a][1] = a;
+        
+        boundary[2 * (boundaryLength - 1) + a][0] = a; // bottom
+        boundary[2 * (boundaryLength - 1) + a][1] = boundaryLength -1;
+        
+        boundary[3 * (boundaryLength - 1) + a][0] = boundaryLength - 1; // right
+        boundary[3 * (boundaryLength - 1) + a][1] = boundaryLength - 1 -a;
+    }
+    for (int c=0; c<perimeter; c++) {
+        cout <<  c << "("  << boundary[c][0] << "," << boundary[c][1] << ") " << endl;
+    }
+
+    // setting interior pts
+    for (int i=0; i<boundaryLength-2; i++) {
+        for (int j=0; j<boundaryLength-2; j++) {
+            interiorPoints[i][j][0] = i+1;
+            interiorPoints[i][j][1] = j+1;
+        }
+    }
+    
+    // calculate lambda
+    double lambda[(boundaryLength-2)][(boundaryLength-2)][perimeter];
+    for (int i=0; i<(boundaryLength-2); i++) {
+        for (int j=0;j<(boundaryLength-2);j++) {
+            
+            long double sum = 0;
+            
+            for (int c=0; c<perimeter; c++) {
+                // pi-1 = p0, pi = p1, pi+1=p2
+                Point p0, p1, p2;
+                p1.x = boundary[c][0];
+                p1.y = boundary[c][1];
+                p0.x = boundary[(c-1 + perimeter)%(perimeter)][0];
+                p0.y = boundary[(c-1 + perimeter)%(perimeter)][1];
+                p2.x = boundary[(c+1)%(perimeter)][0];
+                p2.y = boundary[(c+1)%(perimeter)][1];
+
+                Point inner;
+                inner.x= interiorPoints[i][j][0];
+                inner.y= interiorPoints[i][j][1];
+                    
+                vector<double> ip0, ip1, ip2;
+                ip0.push_back(inner.x - p0.x);
+                ip0.push_back(inner.y - p0.y);
+                ip1.push_back(inner.x - p1.x);
+                ip1.push_back(inner.y - p1.y);
+                ip2.push_back(inner.x - p2.x);
+                ip2.push_back(inner.y - p2.y);
+                    
+                double alpha = acos(dotProduct(ip0, ip1)/(length(ip0)* length(ip1)));
+                double beta = acos(dotProduct(ip1, ip2)/(length(ip1)* length(ip2)));
+                if (alpha != alpha || tan(alpha/2) != tan(alpha/2))
+                    cout << "alpha is nan" << endl;
+                if (beta != beta || tan(beta/2) != tan(beta/2))
+                    cout << "beta is nan" << endl;
+                if (length(ip1) ==0)
+                    cout << "length of ip1 is 0" << endl;
+                lambda[i][j][(c+1)%perimeter] = (tan(alpha/2) + tan(beta/2)) / (length(ip1));
+                sum += lambda[i][j][(c+1)%perimeter];
+
+                }
+//            cout << "Sum : " << sum << endl;
+            for (int c=0; c<perimeter; c++) {
+                lambda[i][j][c] = lambda[i][j][c] / sum;
+//                cout << "(" <<interiorPoints[i][j][0] << "," << interiorPoints[i][j][1] << ") ("  << boundary[c][0] << "," << boundary[c][1] << ") " << lambda[i][j][c] << endl;
+            }
+        }
+    }
+    
+
+    
+    //Compute the differences along the boundary
+    double diff_boundary[perimeter][3];
+    for (int c = 0; c < perimeter; c++) {
+        double x,y;
+        x = boundary[c][0];
+        y = boundary[c][1];
+        Pixel Px_patch, Px_bg;
+        Px_patch = patch->getPixel(x, y);
+        Px_bg = background->getPixel(x, y);
+        for (int channel = 0; channel < 3; channel++) {
+            diff_boundary[c][channel] = Px_bg.getColor(channel) - Px_patch.getColor(channel);
+        }
+    }
+    
+    //Evaluate the mean-value interpolant at x
+    for (int i = 0; i < boundaryLength - 2; i++)
+        for (int j = 0; j < boundaryLength - 2; j++)
+        {
+            int x, y;
+            x = interiorPoints[i][j][0];
+            y = interiorPoints[i][j][1];
+            double rx_red = 0;
+            double rx_green = 0;
+            double rx_blue = 0;
+            
+            for (int c = 0 ; c < perimeter; c++) {
+                rx_red += lambda[i][j][c] * diff_boundary[c][0];
+                rx_green += lambda[i][j][c] * diff_boundary[c][1];
+                rx_blue += lambda[i][j][c] * diff_boundary[c][2];
+            }
+            
+            result->setPixel(x, y, RED, correctColor(patch->getPixel(x, y, RED) + rx_red));
+            result->setPixel(x, y, GREEN, correctColor(patch->getPixel(x, y, GREEN) + rx_green));
+            result->setPixel(x, y, BLUE, correctColor(patch->getPixel(x, y, BLUE) + rx_blue));
+        }
+    return result;
+}
+
+
+
+double correctColor(double value)
+{
+    if (value > 1)
+        return 1;
+    else if (value < 0)
+        return 0;
+    else
+        return value;
+}
+

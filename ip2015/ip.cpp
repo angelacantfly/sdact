@@ -195,103 +195,184 @@ void mvc_cloning(Image* source, Image* patch)
     }
 }
 
+void computeLambda()
+{
+    cout << "HERE" << endl;
+    
+    // for fixed square  in duck
+    Point upperLeft, upperRight, lowerLeft, lowerRight;
+    upperLeft.x=0;
+    upperLeft.y=0;
+    upperRight.x=10;
+    upperRight.y=0;
+    lowerLeft.x=0;
+    lowerLeft.y=10;
+    lowerRight.x=10;
+    lowerRight.y = 10;
+    
+    int boundaryLength=11;
+    int perimeter=4*(boundaryLength-1);
+    Point boundary[(boundaryLength-1)*4];
+    for (int i=0;i<boundaryLength;i++) {
+        // left
+        boundary[i].x=0;
+        boundary[i].y=i;
+        
+        // bottom
+        boundary[i+boundaryLength].x=i;
+        boundary[i+boundaryLength].y=boundaryLength;
+        
+        // right
+        boundary[i+boundaryLength*2].x=boundaryLength;
+        boundary[i+boundaryLength*2].y = boundaryLength-i;
+        
+        // top
+        boundary[i+boundaryLength*3].x=boundaryLength-i;
+        boundary[i+boundaryLength*3].y=0;
+    }
+    for (int i=0; i<perimeter; i++)
+        cout << boundary[i].x << " " << boundary[i].y << endl;
+//
+//    Point interior[(boundaryLength-2)*(boundaryLength-2)];
+//    for (int i=0; i<boundaryLength-1; i++) {
+//        for (int j=0; j<boundaryLength-1; j++) {
+//            interior[i*(boundaryLength-1)+j].x = i;
+//            interior[i*(boundaryLength-1)+j].y = j;
+//        }
+//    }
+//    
+//    double lambda[(boundaryLength-2)*(boundaryLength-2)][perimeter];
+//    
+//    for (int i=0; i<(boundaryLength-2)*(boundaryLength-2); i++) {
+//        double sum = 0;
+//        for (int j=0; j<perimeter; j++) {
+//            // pi-1 = p0, pi = p1, pi+1=p2
+//            Point p0 = boundary[j];
+//            Point p1 = boundary[(j+1)%perimeter];
+//            Point p2 = boundary[(j+2)%perimeter];
+//            
+//            Point inner = interior[i];
+//            
+//            vector<double> ip0, ip1, ip2;
+//            ip0.push_back(inner.x - p0.x);
+//            ip0.push_back(inner.y - p0.y);
+//            ip1.push_back(inner.x - p1.x);
+//            ip1.push_back(inner.y - p1.y);
+//            ip2.push_back(inner.x - p2.x);
+//            ip2.push_back(inner.y - p2.y);
+//            
+//            if (i==80 && j==34) {
+//                cout << "stop" << endl;
+//            }
+//            
+//            
+//            double alpha = acos(dotProduct(ip0, ip1)/(length(ip0)* length(ip1)));
+//            double beta = acos(dotProduct(ip1, ip2)/(length(ip1)* length(ip2)));
+//            lambda[i][j] = (tan(alpha/2) + tan(beta/2)) / (length(ip1));
+//            sum += lambda[i][(j+1)%perimeter];
+//            
+//            
+//        }
+//        
+//        for (int j=0; j<perimeter; j++) {
+//            lambda[i][j] = lambda[i][j] / sum;
+//            cout << i << " " << j << " " << lambda[i][j] << endl;
+//        }
+//        
+//    }
+//
+    
+}
+
 
 Image* mvc_cloning_square(Image* source, Image* patch)
 {
+    cout << "HERE";
     int width = source->getWidth();
     int height = source->getHeight();
     Image* newImage =  new Image(*source);
-    vector<Point> boundary_source = find_boundary(width, height);
-    vector<Point> list = boundary_source;
-//    cout << "size: "<< boundary_source.size() << endl;
-//    for (int i = 0; i < boundary_source.size(); i++)
-//    {
-//        cerr << boundary_source[i].x << ","<< boundary_source[i].y <<  endl ;
-//    }
-
-    Point top_left, top_right, bot_left, bot_right;
-    find_vertices_square(width, height, &top_left, &top_right, &bot_left, &bot_right);
-    top_left.x +=1;
-    top_left.y +=1;
-    top_right.x -=1;
-    top_right.y +=1;
-    bot_left.x +=1;
-    bot_left.y -=1;
-    bot_right.x -=1;
-    bot_right.y -=1;
-    double size_of_square = top_right.x - top_left.x;
-    double size_of_inner_pixels = size_of_square -2;
-    cout << "size of inner pixels :" << size_of_inner_pixels<< endl;
-    cout << "top left x: " << top_left.x << ", y :" << top_left.y << endl;
-    cout << "bot_left.y : " << bot_left.y << endl;
-    cout << "top_right.x : " << top_right.x << endl;
     
-    vector<vector<vector<double>>> lambda_result;
-    lambda_result.resize(size_of_inner_pixels);
-    for (int i = 0; i <= size_of_inner_pixels; i++) {
-        lambda_result[i].resize(size_of_inner_pixels);
-        for (int j = 0; j <= size_of_inner_pixels ; j++) {
-            lambda_result[i][j].resize(boundary_source.size());
+    // for fixed square  in duck
+    Point upperLeft, upperRight, lowerLeft, lowerRight;
+    upperLeft.x=0;
+    upperLeft.y=0;
+    upperRight.x=10;
+    upperRight.y=0;
+    lowerLeft.x=0;
+    lowerLeft.y=10;
+    lowerRight.x=10;
+    lowerRight.y = 10;
+    
+    int boundaryLength=11;
+    int perimeter=4*(boundaryLength-1);
+    Point boundary[(boundaryLength-1)*4];
+    for (int i=0;i<boundaryLength;i++) {
+        // left
+        boundary[i].x=0;
+        boundary[i].y=i;
+        
+        // bottom
+        boundary[i+boundaryLength].x=i;
+        boundary[i+boundaryLength].y=boundaryLength;
+        
+        // right
+        boundary[i+boundaryLength*2].x=boundaryLength;
+        boundary[i+boundaryLength*2].y = boundaryLength-i;
+        
+        // top
+        boundary[i+boundaryLength*3].x=boundaryLength-i;
+        boundary[i+boundaryLength*3].y=0;
+    }
+    for (int i=0; i<perimeter; i++)
+        cout << boundary[i].x << " " << boundary[i].y << endl;
+    
+    Point interior[(boundaryLength-2)*(boundaryLength-2)];
+    for (int i=0; i<boundaryLength-1; i++) {
+        for (int j=0; j<boundaryLength-1; j++) {
+            interior[i*(boundaryLength-1)+j].x = i;
+            interior[i*(boundaryLength-1)+j].y = j;
         }
     }
-    Point current;
-    double row, col;
-    unsigned long size = boundary_source.size();
-    for (int i = top_left.x+1 ; i < top_right.x; i++) {
-        row = i - (top_left.x+1);
-        for (int j = top_left.y+1; j < bot_left.y; j++) {
-            col = j - (top_left.y+1);
-//            cout << "row : " << row << " , col :" << col << endl;
-            current.x = i;
-            current.y = j;
-            long double alpha, beta;
-            long double sum = 0;
-
-           
-            alpha = mvc_calculate_angle(current, boundary_source[size-1], boundary_source[0]);
-            beta = mvc_calculate_angle(current, boundary_source[0], boundary_source[1]);
-            lambda_result[row][col][0] = mvc_calculate_w(alpha, beta, boundary_source[0], current);
-            sum += lambda_result[col][col][0];
+    
+    double lambda[(boundaryLength-2)*(boundaryLength-2)][perimeter];
+    
+    for (int i=0; i<(boundaryLength-2)*(boundaryLength-2); i++) {
+        double sum = 0;
+        for (int j=0; j<perimeter; j++) {
+            // pi-1 = p0, pi = p1, pi+1=p2
+            Point p0 = boundary[j];
+            Point p1 = boundary[(j+1)%perimeter];
+            Point p2 = boundary[(j+2)%perimeter];
             
-            alpha = mvc_calculate_angle(current, boundary_source[size-2], boundary_source[size-1]);
-            beta = mvc_calculate_angle(current, boundary_source[size-1], boundary_source[0]);
-            lambda_result[row][col][size-1] = mvc_calculate_w(alpha, beta, boundary_source[size-1], current);
-            sum+= lambda_result[row][col][size-1];
-//            cout << i << ","<< j << ","<< size-1 << ": "<<lambda_result[row][col[size-1]<< endl;
-//            cout << "SUM :" << sum << endl;
-
-//            if (lambda_result[row][col[size-1] != lambda_result[row][col[size-1]) {
-//                cout << i << ", " << j << ": "<< lambda_result[row][col[0] << endl;
-//            }
+            Point inner = interior[i];
             
-            for (int k = 1 ; k < size-2; k++) {
-                alpha = mvc_calculate_angle(current, list[k-1], list[k]);
-                beta = mvc_calculate_angle(current, list[k], list[k+1]);
-                lambda_result[row][col][k] = mvc_calculate_w(alpha, beta, list[k], current);
-                sum += lambda_result[row][col][k];
-                
-
-                if (lambda_result[row][col][k] != lambda_result[row][col][k]) {
-                    
-                    cout << "alpha :" << alpha <<endl;
-                    cout << "beta :" << beta << endl;
-                    cout << "SUM :" << sum << endl;
-                    cout << i << ","<< j << ","<< k << ": "<<lambda_result[row][col][k]<< endl;
-                    cout << "NANANAN!" << endl;
-                }
+            vector<double> ip0, ip1, ip2;
+            ip0.push_back(inner.x - p0.x);
+            ip0.push_back(inner.y - p0.y);
+            ip1.push_back(inner.x - p1.x);
+            ip1.push_back(inner.y - p1.y);
+            ip2.push_back(inner.x - p2.x);
+            ip2.push_back(inner.y - p2.y);
+    
+            if (i==80 && j==34) {
+                cout << "stop" << endl;
             }
             
-            for (int k = 0; k < size -1; k++) {
-                lambda_result[row][col][k] = lambda_result[row][col][k] / sum;
-                if (lambda_result[row][col][k] != lambda_result[row][col][k]) {
-                    cout << i << ", "<< j << ", " << k  << " - "<<  lambda_result[row][col][k] << sum << endl;
-                }
-            }
+            
+            double alpha = acos(dotProduct(ip0, ip1)/(length(ip0)* length(ip1)));
+            double beta = acos(dotProduct(ip1, ip2)/(length(ip1)* length(ip2)));
+            lambda[i][j] = (tan(alpha/2) + tan(beta/2)) / (length(ip1));
+            sum += lambda[i][(j+1)%perimeter];
+            
             
         }
-        cout << row << "/" << size_of_inner_pixels << endl;
+        
+        for (int j=0; j<perimeter; j++) {
+            lambda[i][j] = lambda[i][j] / sum;
+            cout << i << " " << j << " " << lambda[i][j] << endl;
+        }
+        
     }
-    cout << "Mvc calculated"<< endl;
-    
-    return newImage;
+
+       return newImage;
 }

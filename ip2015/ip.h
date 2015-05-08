@@ -58,6 +58,9 @@ Image* ip_select_center_square(Image* src);
 Image* mvc_cloning_square(Image* source, Image* patch);
 
 
+void computeLambda(void);
+
+
 
 
 #endif // IP_H

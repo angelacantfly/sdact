@@ -21,8 +21,8 @@ using namespace std;
 
 struct Point
 {
-    double x;
-    double y;
+    int x;
+    int y;
 };
 
 
